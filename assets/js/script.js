@@ -55,7 +55,7 @@ function createTaskCard(task) {
 
 
 
-    saveProjectsToStorage(taskList);
+  //  saveProjectsToStorage(taskList);
 
 
     // ? Return the card so it can be appended to the correct lane.
@@ -65,7 +65,7 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-   //  taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+    taskList = JSON.parse(localStorage.getItem("tasks")) || [];
     // ? Empty existing project cards out of the lanes
     const todoList = $('#todo-cards');
     todoList.empty();
@@ -118,7 +118,7 @@ function handleAddTask(event) {
         status: 'to-do'
     }
     taskList.push(task); //Add new tasks to the taskList array.
-  //  saveProjectsToStorage(taskList)
+  saveProjectsToStorage(taskList)
     renderTaskList();
 }
 
@@ -128,8 +128,22 @@ function saveProjectsToStorage(tasks) {
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-
-}
+        const taskId = $(this).attr('data-task-id');
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      
+        // ? Remove project from the array. There is a method called `filter()` for this that is better suited which we will go over in a later activity. For now, we will use a `forEach()` loop to remove the project.
+        tasks.forEach((task) => {
+          if (task.id == taskId) {
+            tasks.splice(tasks.indexOf(task), 1);
+          }
+        });
+      
+        // ? We will use our helper function to save the projects to localStorage
+        saveProjectsToStorage(tasks);
+      
+        // ? Here we use our other function to print projects back to the screen
+        renderTaskList();
+      }
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
