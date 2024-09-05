@@ -53,11 +53,6 @@ function createTaskCard(task) {
     taskCard.append(cardHeader, cardBody);
 
 
-
-
-  //  saveProjectsToStorage(taskList);
-
-
     // ? Return the card so it can be appended to the correct lane.
     return taskCard;
 
@@ -66,7 +61,7 @@ function createTaskCard(task) {
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
     taskList = JSON.parse(localStorage.getItem("tasks")) || [];
-    // ? Empty existing project cards out of the lanes
+    // ? Empty existing task cards out of the lanes
     const todoList = $('#todo-cards');
     todoList.empty();
 
@@ -76,7 +71,7 @@ function renderTaskList() {
     const doneList = $('#done-cards');
     doneList.empty();
 
-    // ? Loop through projects and create project cards for each status
+    // ? Loop through tasks and create task cards for each status
     for (let task of taskList) {
         if (task.status === 'to-do') {
             todoList.append(createTaskCard(task));
@@ -118,11 +113,11 @@ function handleAddTask(event) {
         status: 'to-do'
     }
     taskList.push(task); //Add new tasks to the taskList array.
-  saveProjectsToStorage(taskList)
+  saveTasksToStorage(taskList)
     renderTaskList();
 }
 
-function saveProjectsToStorage(tasks) {
+function saveTasksToStorage(tasks) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
@@ -131,26 +126,26 @@ function handleDeleteTask(event) {
         const taskId = $(this).attr('data-task-id');
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
       
-        // ? Remove project from the array. There is a method called `filter()` for this that is better suited which we will go over in a later activity. For now, we will use a `forEach()` loop to remove the project.
+        // ? Remove task from the array. There is a method called `filter()` for this that is better suited which we will go over in a later activity. For now, we will use a `forEach()` loop to remove the task.
         tasks.forEach((task) => {
           if (task.id == taskId) {
             tasks.splice(tasks.indexOf(task), 1);
           }
         });
       
-        // ? We will use our helper function to save the projects to localStorage
-        saveProjectsToStorage(tasks);
+        // ? We will use our helper function to save the tasks to localStorage
+        saveTasksToStorage(tasks);
       
-        // ? Here we use our other function to print projects back to the screen
+        // ? Here we use our other function to print tasks back to the screen
         renderTaskList();
       }
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    // ? Read projects from localStorage
+    // ? Read tasks from localStorage
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    // ? Get the project id from the event
+    // ? Get the task id from the event
     // const taskId = ui.draggable[0].dataset.taskId; //
     console.log(ui.draggable[0])
     const taskId = $(ui.draggable[0]).attr('data-task-id')
@@ -159,7 +154,7 @@ function handleDrop(event, ui) {
     const newStatus = event.target.id;
 
     // for (let task of tasks) { //task can be anything here.
-    //     // ? Find the project card by the `id` and update the project status.
+    //     // ? Find the task card by the `id` and update the task status.
     //     console.log(task.id)
     //     console.log(taskId);
     //     if (task.id == taskId) {
@@ -177,7 +172,7 @@ function handleDrop(event, ui) {
         return task;
     });
     console.log(updatedTasks)
-    // ? Save the updated projects array to localStorage (overwritting the previous one) and render the new project data to the screen.
+    // ? Save the updated tasks array to localStorage (overwritting the previous one) and render the new task data to the screen.
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     renderTaskList();
 }
